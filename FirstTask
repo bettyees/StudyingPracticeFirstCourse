@@ -18,9 +18,11 @@ int main() {
     }
     // Создаем массив dp для хранения минимальных сумм
     vector<vector<int>> dp(n, vector<int>(n, 0));
+    vector<vector<int>> parent(n, vector<int>(n, -1));  // Запоминаем, откуда пришли
     
     // Вершина пирамиды
     dp[0][0] = a[0][0];
+    parent[0][0] = -1;  // У вершины нет родителя
     
     // Заполняем dp
     for (int i = 1; i < n; i++) {
@@ -28,25 +30,54 @@ int main() {
             if (j == 0) {
                 // Левый край - можно прийти только сверху
                 dp[i][j] = dp[i-1][j] + a[i][j];
+                parent[i][j] = j;  // Пришли сверху (та же позиция)
             } else if (j == i) {
                 // Правый край - можно прийти только сверху-слева
                 dp[i][j] = dp[i-1][j-1] + a[i][j];
+                parent[i][j] = j-1;  // Пришли сверху-слева
             } else {
-                // Середина - выбираем минимальный путь из двух
-                dp[i][j] = min(dp[i-1][j-1], dp[i-1][j]) + a[i][j];
+                // Сравниваем два пути
+                if (dp[i-1][j-1] < dp[i-1][j]) {
+                    dp[i][j] = dp[i-1][j-1] + a[i][j];
+                    parent[i][j] = j-1;  // Пришли сверху-слева
+                } else {
+                    dp[i][j] = dp[i-1][j] + a[i][j];
+                    parent[i][j] = j;  // Пришли сверху
+                }
             }
         }
     }
     
     // Находим минимальную сумму на последнем уровне
     int min_sum = dp[n-1][0];
+    int min_pos = 0;
     for (int j = 1; j < n; j++) {
         if (dp[n-1][j] < min_sum) {
             min_sum = dp[n-1][j];
+            min_pos = j;
         }
     }
+    // Восстанавливаем путь (индексы) от основания к вершине
+    vector<int> path_indices;
+    int row = n - 1;
+    int column = min_pos;
+    
+    while (row >= 0) {
+        path_indices.push_back(column);  // Запоминаем позицию в строке
+        if (row == 0) break;
+        column = parent[row][column];  // Переходим к родителю
+        row--;
+    }
+    
+    // Разворачиваем путь - теперь сверху вниз
+    reverse(path_indices.begin(), path_indices.end());
     
     cout << "Минимальное время: " << min_sum << endl;
+    cout << "Путь: ";
+    for (int i = 0; i < path_indices.size(); i++) {
+        cout << path_indices[i] << " ";
+    }
+    cout << endl;
     
     return 0;
 }
