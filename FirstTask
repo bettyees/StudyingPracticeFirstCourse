@@ -1,1 +1,29 @@
+#include <iostream>
+#include <vector>
+using namespace std;
 
+int main() {
+    int n;
+    cin >> n;  // Считываем высоту пирамиды
+    
+    // Создаем двумерный вектор для хранения пирамиды
+    vector<vector<int>> a(n, vector<int>(n, 0));
+    
+    // Считываем пирамиду
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j <= i; j++) {
+            cin >> a[i][j];
+        }
+    }
+    
+    // Выводим считанную пирамиду для проверки
+    cout << "Пирамида:" << endl;
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j <= i; j++) {
+            cout << a[i][j] << " ";
+        }
+        cout << endl;
+    }
+    
+    return 0;
+}
