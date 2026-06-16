@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <algorithm>
 using namespace std;
 
 int main() {
@@ -15,15 +16,37 @@ int main() {
             cin >> a[i][j];
         }
     }
+    // Создаем массив dp для хранения минимальных сумм
+    vector<vector<int>> dp(n, vector<int>(n, 0));
     
-    // Выводим считанную пирамиду для проверки
-    cout << "Пирамида:" << endl;
-    for (int i = 0; i < n; i++) {
+    // Вершина пирамиды
+    dp[0][0] = a[0][0];
+    
+    // Заполняем dp
+    for (int i = 1; i < n; i++) {
         for (int j = 0; j <= i; j++) {
-            cout << a[i][j] << " ";
+            if (j == 0) {
+                // Левый край - можно прийти только сверху
+                dp[i][j] = dp[i-1][j] + a[i][j];
+            } else if (j == i) {
+                // Правый край - можно прийти только сверху-слева
+                dp[i][j] = dp[i-1][j-1] + a[i][j];
+            } else {
+                // Середина - выбираем минимальный путь из двух
+                dp[i][j] = min(dp[i-1][j-1], dp[i-1][j]) + a[i][j];
+            }
         }
-        cout << endl;
     }
+    
+    // Находим минимальную сумму на последнем уровне
+    int min_sum = dp[n-1][0];
+    for (int j = 1; j < n; j++) {
+        if (dp[n-1][j] < min_sum) {
+            min_sum = dp[n-1][j];
+        }
+    }
+    
+    cout << "Минимальное время: " << min_sum << endl;
     
     return 0;
 }
