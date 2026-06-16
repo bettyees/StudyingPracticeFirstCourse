@@ -57,25 +57,27 @@ int main() {
             min_pos = j;
         }
     }
-    // Восстанавливаем путь (индексы) от основания к вершине
-    vector<int> path_indices;
+    
+    // Восстанавливаем путь в виде чисел
+    vector<int> path_values;
     int row = n - 1;
     int column = min_pos;
     
     while (row >= 0) {
-        path_indices.push_back(column);  // Запоминаем позицию в строке
+        path_values.push_back(a[row][column]);  // Запоминаем число на этом участке
         if (row == 0) break;
-        column = parent[row][column];  // Переходим к родителю
+        column = parent[row][column];
         row--;
     }
     
     // Разворачиваем путь - теперь сверху вниз
-    reverse(path_indices.begin(), path_indices.end());
+    reverse(path_values.begin(), path_values.end());
     
-    cout << "Минимальное время: " << min_sum << endl;
-    cout << "Путь: ";
-    for (int i = 0; i < path_indices.size(); i++) {
-        cout << path_indices[i] << " ";
+    // Выводим результат
+    cout << min_sum << endl;
+    for (int i = 0; i < path_values.size(); i++) {
+        cout << path_values[i];
+        if (i != path_values.size() - 1) cout << " ";
     }
     cout << endl;
     
