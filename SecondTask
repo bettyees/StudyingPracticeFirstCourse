@@ -47,7 +47,8 @@ int main() {
     }
 
     int k = countComponents(n, graph);
-    cout << k << endl; // Выводим число компонент связности
+    int result = k - 1; // Для объединения k компонент нужно k-1 рёбер
+    cout << result << endl;
 
     return 0;
 }
