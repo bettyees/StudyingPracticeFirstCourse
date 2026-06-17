@@ -12,6 +12,20 @@ void dfs(int node, vector<bool>& visited, const vector<vector<int>>& graph) {
     }
 }
 
+int countComponents(int n, const vector<vector<int>>& graph) {
+    vector<bool> visited(n, false);
+    int components = 0;
+
+    // Перебираем все узлы
+    for (int i = 0; i < n; ++i) {
+        if (!visited[i]) {
+            ++components;
+            dfs(i, visited, graph); // Запускаем DFS для новой компоненты
+        }
+    }
+    return components;
+}
+
 int main() {
     int n, m;
     cin >> n >> m;
@@ -32,12 +46,8 @@ int main() {
         graph[v].push_back(u);
     }
 
-    vector<bool> visited(n, false);
-
-    // Запускаем DFS из первого узла (0)
-    dfs(0, visited, graph);
-
-    cout << 0 << endl; // Временный вывод
+    int k = countComponents(n, graph);
+    cout << k << endl; // Выводим число компонент связности
 
     return 0;
 }
