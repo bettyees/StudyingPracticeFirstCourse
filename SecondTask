@@ -1,1 +1,43 @@
+#include <iostream>
+#include <vector>
+using namespace std;
 
+void dfs(int node, vector<bool>& visited, const vector<vector<int>>& graph) {
+    visited[node] = true;
+    // Обходим всех соседей текущего узла
+    for (int neighbor : graph[node]) {
+        if (!visited[neighbor]) {
+            dfs(neighbor, visited, graph);
+        }
+    }
+}
+
+int main() {
+    int n, m;
+    cin >> n >> m;
+
+    vector<pair<int, int>> edges; // Здесь будем хранить рёбра
+    for (int i = 0; i < m; ++i) {
+        int u, v;
+        cin >> u >> v;
+        edges.emplace_back(u, v);
+    }
+    
+    // Создаём список смежности (переводим в 0‑индексацию)
+    vector<vector<int>> graph(n);
+    for (const auto& edge : edges) {
+        int u = edge.first - 1;
+        int v = edge.second - 1;
+        graph[u].push_back(v);
+        graph[v].push_back(u);
+    }
+
+    vector<bool> visited(n, false);
+
+    // Запускаем DFS из первого узла (0)
+    dfs(0, visited, graph);
+
+    cout << 0 << endl; // Временный вывод
+
+    return 0;
+}
