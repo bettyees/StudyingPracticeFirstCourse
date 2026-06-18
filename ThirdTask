@@ -1,1 +1,28 @@
+#include <iostream>
+#include <vector>
+using namespace std;
 
+int main() {
+    int n, k;
+    cin >> n >> k;
+
+    vector<int> snow(n + 1, 0); // Массив для снега, индексация с 1
+    
+    //Здесь будет обработка запросов
+    for (int q = 0; q < k; ++q) {
+        int type;
+        cin >> type;
+        
+        if (type == 1) {
+            int i, x;
+            cin >> i >> x;
+            // Сохраняем данные о снеге на улице i
+            snow[i] += x; // Накапливаем количество снега
+        } else if (type == 2) {
+            int u, r;
+            cin >> u >> r;
+        }
+    }
+
+    return 0;
+}
