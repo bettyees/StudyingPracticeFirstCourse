@@ -21,6 +21,12 @@ int main() {
         } else if (type == 2) {
             int u, r;
             cin >> u >> r;
+
+            int sum = 0;
+            for (int street = u; street <= r; ++street) {
+                sum += snow[street];
+            }
+            cout << sum << endl;
         }
     }
 
