@@ -6,7 +6,7 @@ int main() {
     int n, k;
     cin >> n >> k;
 
-    vector<int> snow(n + 1, 0); // Массив для снега, индексация с 1
+    vector<long long> snow(n + 1, 0); // Массив для снега, индексация с 1
     
     //Здесь будет обработка запросов
     for (int q = 0; q < k; ++q) {
@@ -14,7 +14,8 @@ int main() {
         cin >> type;
         
         if (type == 1) {
-            int i, x;
+            int i;
+            long long x;
             cin >> i >> x;
             // Сохраняем данные о снеге на улице i
             snow[i] += x; // Накапливаем количество снега
@@ -22,7 +23,7 @@ int main() {
             int u, r;
             cin >> u >> r;
 
-            int sum = 0;
+            long long sum = 0;
             for (int street = u; street <= r; ++street) {
                 sum += snow[street];
             }
