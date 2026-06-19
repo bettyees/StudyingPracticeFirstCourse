@@ -20,13 +20,41 @@ int main() {
     string crypt;
     cin >> crypt;
     
-    // Применяем перестановку один раз для проверки
-    string result(n, ' ');
+    string cur = crypt;  // начинаем с зашифрованного слова
+    
+    // Применяем перестановку k раз (для демонстрации)
+    for (long long step = 0; step < k; step++) {
+        string next(n, ' ');
+        for (int i = 0; i < n; i++) {
+            next[i] = cur[p[i]];
+        }
+        cur = next;
+    }
+    vector<bool> visit(n, false);  // массив посещённых элементов
+    vector<vector<int>> cycles;      // вектор для хранения всех циклов
+    
+    // Проходим по всем элементам перестановки
     for (int i = 0; i < n; i++) {
-        result[i] = crypt[p[i]];
+        if (!visit[i]) {
+            vector<int> cycle;
+            int cur = i;
+            while (!visit[cur]) {
+                visit[cur] = true;
+                cycle.push_back(cur);
+                cur = p[cur];
+            }    
+            cycles.push_back(cycle);
+        }
     }
     
-    cout << "Результат одного шифрования: " << result << endl;
+    // Выводим найденные циклы
+    for (int i = 0; i < cycles.size(); i++) {
+        cout << "Цикл " << i + 1 << "(индексы): ";
+        for (int pos : cycles[i]) {
+            cout << pos << " ";      // выводим индексы элементов в цикле
+        }
+        cout << endl;
+    }
     
     return 0;
 }
