@@ -1,1 +1,32 @@
+#include <iostream>
+#include <vector>
+#include <string>
+using namespace std;
 
+int main() {
+    int n;
+    long long k;
+    cin >> n >> k;
+    
+    // Создаём вектор для перестановки размера n
+    vector<int> p(n);
+    // Считываем перестановку
+    for (int i = 0; i < n; i++) {
+        cin >> p[i];
+        p[i]--;
+    }
+    
+    // Считываем зашифрованное слово
+    string crypt;
+    cin >> crypt;
+    
+    // Применяем перестановку один раз для проверки
+    string result(n, ' ');
+    for (int i = 0; i < n; i++) {
+        result[i] = crypt[p[i]];
+    }
+    
+    cout << "Результат одного шифрования: " << result << endl;
+    
+    return 0;
+}
