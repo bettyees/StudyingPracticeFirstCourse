@@ -30,5 +30,15 @@ int main() {
             }
         }
     }
+    // Вычисляем координаты ограничивающего прямоугольника (строго вокруг фигуры)
+    int top_left_row = min_row_1 - 1;
+    int top_left_col = min_col_1 - 1;
+    int bottom_right_row = max_row_1 + 1;
+    int bottom_right_col = max_col_1 + 1;
+
+    // Выводим результат: верхний левый и нижний правый углы
+    cout << top_left_row << " " << top_left_col << " " 
+         << bottom_right_row << " " << bottom_right_col << endl;
+
     return 0;
 }
