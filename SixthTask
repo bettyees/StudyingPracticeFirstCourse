@@ -1,1 +1,22 @@
+#include <iostream>
+#include <algorithm>
+using namespace std;
 
+int main() {
+    int n;
+    cin >> n;
+    
+    for (int i = 0; i < n; ++i) {
+        int a, b, x, y;
+        cin >> a >> b >> x >> y;
+        
+        int pairs_B = min(b, x); // контроллеры B берут модули типа 1
+        int modules = (x - pairs_B) + y; // оставшиеся модули для A
+        int pairs_A = min(a, modules); // контроллеры A берут всё, что осталось
+        
+        int result = pairs_A + pairs_B;
+        cout << result << " ";
+    }
+    
+    return 0;
+}
