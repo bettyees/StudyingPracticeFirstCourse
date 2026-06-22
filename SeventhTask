@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+
 using namespace std;
 
 int main() {
@@ -11,13 +12,24 @@ int main() {
         return 0;
     }
 
-    // Проверяем первый символ — буква A-Z
+    // Проверяем первый символ - буква A-Z
     if (s[0] < 'A' || s[0] > 'Z') {
         cout << "No" << endl;
         return 0;
     }
 
-    cout << "Yes" << endl;
-    return 0;
-}
+    // Проверяем следующие три символа — цифры (0-9)
+    for (int i = 1; i <= 3; ++i) {
+        if (s[i] < '0' || s[i] > '9') {
+            cout << "No" << endl;
+            return 0;
+        }
+    }
 
+    // Проверяем последние два символа — заглавные латинские буквы (A-Z)
+    for (int i = 4; i <= 5; ++i) {
+        if (s[i] < 'A' || s[i] > 'Z') {
+            cout << "No" << endl;
+            return 0;
+        }
+    }
