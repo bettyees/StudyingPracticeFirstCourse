@@ -1,0 +1,33 @@
+{
+  "version": 1,
+  "author": "student",
+  "editor": "wokwi",
+  "parts": [
+    { "type": "wokwi-arduino-uno", "id": "uno", "top": -9, "left": -106.2, "attrs": {} },
+    {
+      "type": "wokwi-potentiometer",
+      "id": "pot",
+      "top": -100,
+      "left": 200,
+      "attrs": { "value": "512" }
+    },
+    { "type": "wokwi-led", "id": "led-g", "top": 0, "left": 320, "attrs": { "color": "green" } },
+    { "type": "wokwi-led", "id": "led-r", "top": 0, "left": 380, "attrs": { "color": "red" } },
+    { "type": "wokwi-resistor", "id": "r1", "top": 60, "left": 320, "attrs": { "value": "220" } },
+    { "type": "wokwi-resistor", "id": "r2", "top": 60, "left": 380, "attrs": { "value": "220" } }
+  ],
+  "connections": [
+    [ "pot:VCC", "uno:5V",    "red",   [ "v0" ] ],
+    [ "pot:GND", "uno:GND.1", "black", [ "v0" ] ],
+    [ "pot:SIG", "uno:A0",    "green", [ "v0" ] ],
+
+    [ "uno:8",   "r1:1",      "green", [ "v0" ] ],
+    [ "r1:2",    "led-g:A",   "green", [ "v0" ] ],
+    [ "led-g:C", "uno:GND.1", "black", [ "v0" ] ],
+
+    [ "uno:9",   "r2:1",      "orange",[ "v0" ] ],
+    [ "r2:2",    "led-r:A",   "orange",[ "v0" ] ],
+    [ "led-r:C", "uno:GND.1", "black", [ "v0" ] ]
+  ],
+  "dependencies": {}
+}
