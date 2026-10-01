@@ -1,0 +1,99 @@
+# Вариант 1: Найти все зелёные и жёлтые объекты,
+# найти их центры, выделить границы:
+#   - зелёные объекты  → СИНЕЙ рамкой
+#   - жёлтые объекты   → ЗЕЛЁНОЙ рамкой
+# Центры ищутся через boundingRect.
+
+import cv2
+import numpy as np
+import matplotlib.pyplot as plt
+from google.colab import files
+from google.colab.patches import cv2_imshow
+
+# 1. Загрузка изображения
+print("Загрузите файл test2.jpg")
+uploaded = files.upload()
+
+filename = list(uploaded.keys())[0]
+image = cv2.imread(filename)
+print("Файл загружен:", filename, "| размер:", image.shape)
+
+#2. Размытие (подавление шума)
+blurred = cv2.GaussianBlur(image, (11, 11), 0)
+
+# 3. Перевод в HSV
+hsv = cv2.cvtColor(blurred, cv2.COLOR_BGR2HSV)
+
+# ЗЕЛЁНЫЕ ОБЪЕКТЫ
+hsv_min_g = np.array((36, 25, 25), np.uint8)
+hsv_max_g = np.array((70, 255, 255), np.uint8)
+green_mask = cv2.inRange(hsv, hsv_min_g, hsv_max_g)
+
+print("\n--- Маска зелёного ---")
+cv2_imshow(green_mask)
+
+contours_g, _ = cv2.findContours(green_mask.copy(),
+                                 cv2.RETR_EXTERNAL,
+                                 cv2.CHAIN_APPROX_SIMPLE)
+
+green_contours = [c for c in contours_g if cv2.contourArea(c) > 100]
+print(f"Найдено зелёных объектов: {len(green_contours)}")
+
+for cnt in green_contours:
+    # центр через boundingRect
+    x, y, w, h = cv2.boundingRect(cnt)
+    cx = x + w // 2
+    cy = y + h // 2
+
+    # СИНЯЯ рамка (границы зелёного объекта)
+    cv2.rectangle(image, (x, y), (x + w, y + h), (255, 0, 0), 3)
+
+    # красная точка в центре
+    cv2.circle(image, (cx, cy), 6, (0, 0, 255), -1)
+
+    # подпись координат центра
+    cv2.putText(image, f"({cx},{cy})", (cx + 10, cy - 10),
+                cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 0), 2)
+
+    print(f"[GREEN]  center = ({cx}, {cy}) | bbox = ({x},{y},{w},{h})")
+
+# ЖЁЛТЫЕ ОБЪЕКТЫ
+hsv_min_y = np.array((20, 100, 100), np.uint8)
+hsv_max_y = np.array((36, 255, 255), np.uint8)
+yellow_mask = cv2.inRange(hsv, hsv_min_y, hsv_max_y)
+
+print("\n--- Маска жёлтого ---")
+cv2_imshow(yellow_mask)
+
+contours_y, _ = cv2.findContours(yellow_mask.copy(),
+                                 cv2.RETR_EXTERNAL,
+                                 cv2.CHAIN_APPROX_SIMPLE)
+
+yellow_contours = [c for c in contours_y if cv2.contourArea(c) > 100]
+print(f"Найдено жёлтых объектов: {len(yellow_contours)}")
+
+for cnt in yellow_contours:
+    #центр через boundingRect
+    x, y, w, h = cv2.boundingRect(cnt)
+    cx = x + w // 2
+    cy = y + h // 2
+
+    # ЗЕЛЁНАЯ рамка (границы жёлтого объекта)
+    cv2.rectangle(image, (x, y), (x + w, y + h), (0, 255, 0), 3)
+
+    # красная точка в центре
+    cv2.circle(image, (cx, cy), 6, (0, 0, 255), -1)
+
+    # подпись координат центра
+    cv2.putText(image, f"({cx},{cy})", (cx + 10, cy - 10),
+                cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 0), 2)
+
+    print(f"[YELLOW] center = ({cx}, {cy}) | bbox = ({x},{y},{w},{h})")
+
+#4. Итоговое изображение
+print("\n--- Результат ---")
+cv2_imshow(image)
+
+# 5. Сохранение результата 
+cv2.imwrite("result.jpg", image)
+files.download("result.jpg")
